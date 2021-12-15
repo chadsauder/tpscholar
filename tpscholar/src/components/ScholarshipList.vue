@@ -1,21 +1,24 @@
 <template>
 <div class="wrapper">
-  <div class="scholarship">
-    <div class="scholarship" v-for="scholarship in scholarships" :key="scholarship.id">
-      <div class="info">
-        <h1>{{scholarship.name}}</h1>
-        <p>{{scholarship.value}}</p>
-        <p>{{scholarship.school}}</p>
-        <p>{{scholarship.description}}</p>
-      </div>
-      <div class="image">
-        <img :src="'/images/scholarships/'+scholarship.image">
-      </div>
-      <div class="value">
-        <h2>{{scholarship.value}}</h2>
-        <button class="auto" @click="addToCart(scholarship)" >Apply</button>
+  <div class="row">
+    <div v-for="scholarship in scholarships" :key="scholarship.id" class="col-sm-3">
+      <b-card
+        v-bind:title="scholarship.name"
+        v-bind:img-src="'/images/scholarships/'+scholarship.image"
+        v-bind:img-alt="'Image for' +scholarship.image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="my-4 p-3 px-4 mx-2 "
 
-      </div>
+      >
+      <b-card-text>
+        {{scholarship.about}} <br /> Valued at: {{scholarship.value}}
+      </b-card-text>
+      <router-link to="/Apply">
+        <b-button class="auto" @click="addToCart(scholarship)">Apply</b-button>
+      </router-link>
+      </b-card>
     </div>
   </div>
 </div>
@@ -28,8 +31,12 @@ export default {
     scholarships: Array
   },
   methods: { 
-    addToCart(product) {
-      //this.$root.$data.cart.push(product);
+    addToCart(scholarship) {
+        if (!this.$root.$data.appliedFor.includes(scholarship)){
+            this.$root.$data.appliedFor.push(scholarship);
+        }
+        this.$root.$data.applyingTitle = scholarship.name;
+        this.$root.$data.applyingValue = scholarship.value;
     }
 
   }
@@ -37,6 +44,9 @@ export default {
 </script>
 
 <style scoped>
+.card{
+  margin-bottom: 30px;
+}
 .wrapper {
   display: flex;
   align-items: center;
@@ -59,7 +69,7 @@ export default {
 .scholarship img {
   border: 2px solid #333;
   height: 250px;
-  width: 200px;
+  width: 400px;
   object-fit: cover;
 }
 
@@ -70,10 +80,10 @@ export default {
 }
 
 .info {
-  background: #F2921D;
+  background: #f0a21e;
   color: #000;
   padding: 10px 30px;
-  height: 80px;
+  height: 100px;
 }
 
 .info h1 {

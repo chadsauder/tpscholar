@@ -1,20 +1,33 @@
 <template>
 <div id="app">
+  <NavBar />
+  <br />
   <div id="menu">
     <div id="brand">
       <router-link to="/">
         <img src="/images/TP logo.png">
       </router-link>
     </div>
+  </div>
+  <router-view />
     <div id="side">
       <a href="https://github.com/chadsauder/tpscholar.git">
         <img src="/images/GitHub_Logo.png">
       </a>
     </div>
-  </div>
-  <router-view />
 </div>
 </template>
+
+<script>
+import NavBar from "./components/NavBar.vue"
+export default {
+  name: 'Home',
+  components: {
+    NavBar
+  }
+}
+</script>
+
 
 
 <style>
@@ -71,4 +84,5 @@ body {
 .browse {
   margin-right: 50px;
 }
+
 </style>

@@ -1,31 +1,47 @@
+
 <template>
 <div>
   <div class="wrapper">
     <div class="search">
-      <form class="pure-form">
-        <i class="fas fa-search"></i><input v-model="searchText" />
-      </form>
+      <input v-model="searchText" placeholder="Search" /> 
     </div>
   </div>
-  <ScholarshipList  :scholarships="scholarships" />
+  <scholarshipList :scholarships="filteredScholarships" />
 </div>
 </template>
 
 <script>
 import ScholarshipList from "../components/ScholarshipList.vue"
+import axios from "axios"
+
 export default {
   name: 'Home',
   components: {
-    ScholarshipList
+    ScholarshipList,
   },
   data() {
     return {
       searchText: '',
+      scholarships: [],
     }
   },
+  created() {
+    this.getItems();
+  },
+  methods: {
+    async getItems() {
+      try {
+        let response = await axios.get("/api/items");
+        this.scholarships = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  },
   computed: {
-    scholarships() {
-      return this.$root.$data.scholarships.filter(scholarship => scholarship.name.toLowerCase().search(this.searchText.toLowerCase()) >= 0);
+    filteredScholarships() {
+      return this.scholarships.filter(scholarship => scholarship.name.toLowerCase().search(this.searchText.toLowerCase()) >= 0);
     }
   },
 }
@@ -53,6 +69,7 @@ i {
   display: table-cell;
   padding-left: 10px;
   width: 1px;
+  color: black;
 }
 
 input {
@@ -63,4 +80,5 @@ input {
   width: 100%;
   height: 40px;
 }
+
 </style>
